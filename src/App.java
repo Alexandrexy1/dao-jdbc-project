@@ -1,14 +1,16 @@
-import java.time.LocalDate;
-
-import model.entities.Department;
+import model.dao.DaoFactory;
+import model.dao.SellerDao;
 import model.entities.Seller;
 
 public class App {
     public static void main(String[] args) {
-        Department obj = new Department(1, "Computers");
-        Seller seller = new Seller(1, "Alexandre", "teste@teste.com", 3100, LocalDate.now(), obj);
-        System.out.println(obj);
-        System.out.println(seller);
+
+        SellerDao sellerDao = DaoFactory.createSellerDao();
+
+        Seller seller = sellerDao.findById(7);
+        System.out.println(seller); 
+        // output: Id: 7 Name: Alexandre N Email: Alexandre12345@teste.com BaseSalary: 4700.0 
+        // BirthDate: 2003-07-20 Department: Id: 2 Name: Electronics
     }
 }
 
