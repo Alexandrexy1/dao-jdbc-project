@@ -71,14 +71,38 @@ public class SellerDaoJDBC implements SellerDao {
     
     @Override
     public List<Seller> findAll() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
+        PreparedStatement preSt = null;
+        ResultSet resultSet = null;
+        List<Seller> sellerList = new ArrayList<>();
+
+        try {
+            preSt = conn.prepareStatement(
+                "SELECT seller.*,department.Name as DepName " +
+                "FROM seller INNER JOIN department " +
+                "ON seller.DepartmentId = department.Id " +
+                "ORDER by Name" 
+            );
+
+            resultSet = preSt.executeQuery();
+
+            while (resultSet.next()) {
+                sellerList.add(sellerInit(resultSet, departmentInit(resultSet)));
+            }
+
+            return sellerList;
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeResultSet(resultSet);
+            DB.closeStatement(preSt);
+        }
     }
 
     @Override
     public List<Seller> findByDepartment(int departmentId) {
         PreparedStatement preSt = null;
         ResultSet resultSet = null;
+
         try {
              preSt = conn.prepareStatement(
                 "SELECT seller.*,department.Name as DepName " +
@@ -103,6 +127,9 @@ public class SellerDaoJDBC implements SellerDao {
 
         } catch(SQLException e) {
             throw new DbException(e.getMessage());
+        } finally {
+            DB.closeResultSet(resultSet);
+            DB.closeStatement(preSt);
         }
     }
     
