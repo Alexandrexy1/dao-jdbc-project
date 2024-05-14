@@ -51,6 +51,10 @@ public class Seller implements Serializable {
         id = value;
     }
 
+    public void setName(String value) {
+        name = value;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;

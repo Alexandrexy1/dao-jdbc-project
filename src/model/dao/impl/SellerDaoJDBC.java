@@ -61,14 +61,34 @@ public class SellerDaoJDBC implements SellerDao {
     }
 
     @Override
-    public void updateSeller(Seller obj) {
+    public void updateSeller(Seller seller) {
+        PreparedStatement preSt = null;
+    
+        try {
+            preSt = conn.prepareStatement(
+                "UPDATE seller " +
+                "SET Name = ?, Email = ?, BirthDate = ?, BaseSalary = ?, DepartmentId = ? " +
+                "WHERE id = ?"
+            );
+    
+            preSt.setString(1, seller.getName());
+            preSt.setString(2, seller.getEmail());
+            preSt.setDate(3, new java.sql.Date(seller.getBirthDate().getTime()));
+            preSt.setDouble(4, seller.getBaseSalary());
+            preSt.setInt(5, seller.getDepartment().getId());
 
+            preSt.setInt(6, seller.getId());
+            preSt.executeUpdate();
+
+        } catch(SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeStatement(preSt);
+        }
     }
 
     @Override
     public void deleteById(int id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteById'");
     }
 
     @Override
@@ -95,10 +115,8 @@ public class SellerDaoJDBC implements SellerDao {
         } catch (SQLException e) {
             throw new DbException("Erro: " + e.getMessage());
         } finally {
-            if (resultSet != null) {
-                DB.closeResultSet(resultSet);
-                DB.closeStatement(preSt);
-            }
+            DB.closeResultSet(resultSet);
+            DB.closeStatement(preSt);
         }
     }
     

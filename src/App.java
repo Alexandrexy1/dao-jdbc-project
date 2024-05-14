@@ -11,18 +11,16 @@ public class App {
 
         SellerDao sellerDao = DaoFactory.createSellerDao();
 
-        java.sql.Date date = new java.sql.Date(System.currentTimeMillis());
-        Department dep = new Department(1, null);
+        Seller seller = sellerDao.findById(1);
+        System.out.println(seller);
+        // Id: 1 Name: Bob Brown Email: bob@gmail.com BaseSalary: 3200.0 BirthDate: 1998-04-21 Department: Id: 1 Name: Computers
+        
+        seller.setName("Mr Bob");
+        sellerDao.updateSeller(seller);
 
-        Seller seller = new Seller(null, "Blue", "Blueenemyred@test.com", 2800, date, dep);
-
-        sellerDao.insertSeller(seller);
-
-        System.out.println("Seller id: " + seller.getId()); // Seller id: 11
-
-        Seller sellerInDataBase = sellerDao.findById(seller.getId());
-        System.out.println(sellerInDataBase);
-        // Id: 11 Name: Blue Email: Blueenemyred@test.com BaseSalary: 2800.0 BirthDate: 2024-05-14 Department: Id: 1 Name: Computers
+        System.out.println(seller);
+        // Id: 1 Name: Mr Bob Email: bob@gmail.com BaseSalary: 3200.0 BirthDate: 1998-04-21 Department: Id: 1 Name: Computers
+   
     }
 }
 
