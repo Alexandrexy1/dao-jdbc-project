@@ -1,7 +1,9 @@
+import java.sql.Date;
 import java.util.List;
 
 import model.dao.DaoFactory;
 import model.dao.SellerDao;
+import model.entities.Department;
 import model.entities.Seller;
 
 public class App {
@@ -9,17 +11,18 @@ public class App {
 
         SellerDao sellerDao = DaoFactory.createSellerDao();
 
-        List<Seller> sellerList = sellerDao.findAll();
+        java.sql.Date date = new java.sql.Date(System.currentTimeMillis());
+        Department dep = new Department(1, null);
 
-        for (Seller seller: sellerList) {
-            System.out.println(seller);
-            // Id: 3 Name: Alex Grey Email: alex@gmail.com BaseSalary: 3200.0 BirthDate: 1988-01-15 Department: Id: 1 Name: Computers
-            // Id: 6 Name: Alex Pink Email: bob@gmail.com BaseSalary: 3600.0 BirthDate: 1997-03-04 Department: Id: 2 Name: Electronics
-            // Id: 7 Name: Alexandre N Email: Alexandre12345@teste.com BaseSalary: 4700.0 BirthDate: 2024-05-10 Department: Id: 2 Name: Electronics
-            // Id: 1 Name: Bob Brown Email: bob@gmail.com BaseSalary: 3200.0 BirthDate: 1998-04-21 Department: Id: 1 Name: Computers
-            // ...
-        }
+        Seller seller = new Seller(null, "Blue", "Blueenemyred@test.com", 2800, date, dep);
 
+        sellerDao.insertSeller(seller);
+
+        System.out.println("Seller id: " + seller.getId()); // Seller id: 11
+
+        Seller sellerInDataBase = sellerDao.findById(seller.getId());
+        System.out.println(sellerInDataBase);
+        // Id: 11 Name: Blue Email: Blueenemyred@test.com BaseSalary: 2800.0 BirthDate: 2024-05-14 Department: Id: 1 Name: Computers
     }
 }
 

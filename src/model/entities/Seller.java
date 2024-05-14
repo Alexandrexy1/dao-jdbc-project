@@ -14,7 +14,7 @@ public class Seller implements Serializable {
 
     public Seller() {}
     
-    public Seller(int id, String name, String email, double baseSalary, java.sql.Date birthDate, Department department) {
+    public Seller(Integer id, String name, String email, double baseSalary, java.sql.Date birthDate, Department department) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -45,6 +45,10 @@ public class Seller implements Serializable {
 
     public Department getDepartment() {
         return department;
+    }
+
+    public void setId(int value) {
+        id = value;
     }
 
     @Override
