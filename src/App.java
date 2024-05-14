@@ -1,9 +1,7 @@
-import java.sql.Date;
-import java.util.List;
 
 import model.dao.DaoFactory;
 import model.dao.SellerDao;
-import model.entities.Department;
+
 import model.entities.Seller;
 
 public class App {
@@ -11,16 +9,15 @@ public class App {
 
         SellerDao sellerDao = DaoFactory.createSellerDao();
 
-        Seller seller = sellerDao.findById(1);
+        Seller seller = sellerDao.findById(8);
         System.out.println(seller);
-        // Id: 1 Name: Bob Brown Email: bob@gmail.com BaseSalary: 3200.0 BirthDate: 1998-04-21 Department: Id: 1 Name: Computers
+        // Id: 8 Name: Joaozinho Teste Email: Joaozinhoteste12345@teste.com BaseSalary: 4100.0 BirthDate: 2024-05-10 Department: Id: 2 Name: Electronics
         
-        seller.setName("Mr Bob");
-        sellerDao.updateSeller(seller);
+        sellerDao.deleteById(8);
 
-        System.out.println(seller);
-        // Id: 1 Name: Mr Bob Email: bob@gmail.com BaseSalary: 3200.0 BirthDate: 1998-04-21 Department: Id: 1 Name: Computers
-   
+        Seller newSeller = sellerDao.findById(8);
+        System.out.println(newSeller);
+        // null
     }
 }
 
