@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.ArrayList;
 
 import db.DB;
 import db.DbException;
@@ -47,7 +48,8 @@ public class SellerDaoJDBC implements SellerDao {
                 "SELECT seller.*,department.Name as DepName " +
                 "FROM seller INNER JOIN department " +
                 "ON seller.DepartmentId = department.Id " +
-                "WHERE seller.Id = ?"
+                "WHERE seller.Id = ?" +
+                "ORDER by Name"
             );
             
             preSt.setInt(1, id);
@@ -57,15 +59,53 @@ public class SellerDaoJDBC implements SellerDao {
                 Department dep = departmentInit(resultSet);
                 Seller seller = sellerInit(resultSet, dep);
                 return seller;
-            }
+            } 
+            else return null;
         } catch (SQLException e) {
             throw new DbException("Erro: " + e.getMessage());
         } finally {
             DB.closeResultSet(resultSet);
             DB.closeStatement(preSt);
         }
-        return null;
     }
+    
+    @Override
+    public List<Seller> findAll() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
+    }
+
+    @Override
+    public List<Seller> findByDepartment(int departmentId) {
+        PreparedStatement preSt = null;
+        ResultSet resultSet = null;
+        try {
+             preSt = conn.prepareStatement(
+                "SELECT seller.*,department.Name as DepName " +
+                "FROM seller INNER JOIN department " +
+                "ON seller.DepartmentId = department.Id " +
+                "WHERE DepartmentId = ?"
+             );
+
+             preSt.setInt(1, departmentId);
+             resultSet = preSt.executeQuery();
+
+             if (resultSet.next()) {
+
+                List<Seller> sellerList = new ArrayList<>();
+
+                while (resultSet.next()) {
+                    sellerList.add(sellerInit(resultSet, departmentInit(resultSet)));
+                }
+                return sellerList;
+             } 
+             else return null;
+
+        } catch(SQLException e) {
+            throw new DbException(e.getMessage());
+        }
+    }
+    
 
     private Seller sellerInit(ResultSet resultSet, Department dep) throws SQLException {
         int sellerId = resultSet.getInt("Id");
@@ -84,10 +124,5 @@ public class SellerDaoJDBC implements SellerDao {
         return new Department(depId, depName);
     }
 
-    @Override
-    public List<Seller> findAll() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
-    }
 
 }
