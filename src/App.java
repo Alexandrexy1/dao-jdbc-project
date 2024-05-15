@@ -1,23 +1,21 @@
 
 import model.dao.DaoFactory;
-import model.dao.SellerDao;
+import model.dao.DepartmentDao;
+import model.entities.Department;
 
-import model.entities.Seller;
+
+
 
 public class App {
     public static void main(String[] args) {
 
-        SellerDao sellerDao = DaoFactory.createSellerDao();
-
-        Seller seller = sellerDao.findById(8);
-        System.out.println(seller);
-        // Id: 8 Name: Joaozinho Teste Email: Joaozinhoteste12345@teste.com BaseSalary: 4100.0 BirthDate: 2024-05-10 Department: Id: 2 Name: Electronics
+        DepartmentDao departmentDao = DaoFactory.createDeparmentDao();
         
-        sellerDao.deleteById(8);
+        Department dep = departmentDao.findById(1);
+        System.out.println(dep);
+        //Department Id: 1 Name: Computers
 
-        Seller newSeller = sellerDao.findById(8);
-        System.out.println(newSeller);
-        // null
+        
     }
 }
 

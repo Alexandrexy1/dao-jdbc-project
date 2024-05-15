@@ -4,9 +4,9 @@ import java.util.List;
 
 import model.entities.Department;
 
-interface DepartmentDao {
-    void insert(Department obj);
-    void update(Department obj);
+public interface DepartmentDao {
+    void insertDepartment(Department obj);
+    void updateDepartment(Department obj);
     void deleteById(int id);
     Department findById(int id);
     List<Department> findAll();
