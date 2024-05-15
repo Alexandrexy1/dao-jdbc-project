@@ -20,6 +20,10 @@ public class Department implements Serializable {
         return name;
     }
 
+    public void setId(int value) {
+        id = value;
+    }
+
     public void setName(String value) {
         name = value;
     }

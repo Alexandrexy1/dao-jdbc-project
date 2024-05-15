@@ -21,9 +21,38 @@ public class DepartmentDaoJDBC implements DepartmentDao {
     }
 
     @Override
-    public void insertDepartment(Department obj) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'insert'");
+    public void insertDepartment(Department dep) {
+        PreparedStatement preSt = null;
+        ResultSet resultSet = null;
+
+        try {
+            preSt = conn.prepareStatement(
+                "INSERT INTO department " +
+                "(Name) " +
+                "VALUES (?)",
+                PreparedStatement.RETURN_GENERATED_KEYS
+            );
+
+            preSt.setString(1, dep.getName());
+            int rowsChanged = preSt.executeUpdate();
+
+            if (rowsChanged > 0) {
+                resultSet = preSt.getGeneratedKeys();
+
+                if (resultSet.next()) {
+                    int id = resultSet.getInt(1);
+                    dep.setId(id);
+
+                    DB.closeResultSet(resultSet);
+                }
+                else throw new DbException("Error: no rows changed!");
+            }
+
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeStatement(preSt);
+        }
     }
 
     @Override
