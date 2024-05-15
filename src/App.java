@@ -9,11 +9,14 @@ public class App {
 
         DepartmentDao departmentDao = DaoFactory.createDeparmentDao();
         
-        Department dep = new Department(null, "Computers");
-        departmentDao.insertDepartment(dep);
-        
-        System.out.println(departmentDao.findById(dep.getId()));
+        Department dep = departmentDao.findById(6);
+        System.out.println(dep);
         // Department Id: 6 Name: Computers
+        
+        departmentDao.deleteById(6);
+        Department newDep = departmentDao.findById(6);
+        System.out.println(newDep);
+        // null
         
     }
 }
