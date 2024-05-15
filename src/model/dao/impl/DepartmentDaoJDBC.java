@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -18,7 +19,7 @@ public class DepartmentDaoJDBC implements DepartmentDao {
     public DepartmentDaoJDBC(Connection conn) {
         this.conn = conn;
     }
-    
+
     @Override
     public void insertDepartment(Department obj) {
         // TODO Auto-generated method stub
@@ -66,8 +67,32 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 
     @Override
     public List<Department> findAll() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
+        PreparedStatement preSt = null;
+        ResultSet resultSet = null;
+        List<Department> departmentList = new ArrayList<>();
+
+        try {
+            preSt = conn.prepareStatement(
+                "SELECT * " +
+                "FROM department " +
+                "ORDER BY Name"
+            );
+
+            resultSet = preSt.executeQuery();
+
+            while (resultSet.next()) {
+                departmentList.add(departmentInit(resultSet));
+            }
+
+            return departmentList;
+
+        } catch(SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeResultSet(resultSet);
+            DB.closeStatement(preSt);
+            
+        }
     }
 
     private Department departmentInit(ResultSet resultSet) throws SQLException {

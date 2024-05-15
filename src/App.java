@@ -1,9 +1,9 @@
 
+import java.util.List;
+
 import model.dao.DaoFactory;
 import model.dao.DepartmentDao;
 import model.entities.Department;
-
-
 
 
 public class App {
@@ -11,9 +11,9 @@ public class App {
 
         DepartmentDao departmentDao = DaoFactory.createDeparmentDao();
         
-        Department dep = departmentDao.findById(1);
-        System.out.println(dep);
-        //Department Id: 1 Name: Computers
+        List<Department> depList = departmentDao.findAll();
+        System.out.println(depList);
+        // [Department Id: 4 Name: Books, Department Id: 1 Name: Computers, Department Id: 2 Name: Electronics, Department Id: 3 Name: Fashion]
 
         
     }
