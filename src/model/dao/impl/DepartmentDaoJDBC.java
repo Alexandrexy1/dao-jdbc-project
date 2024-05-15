@@ -28,8 +28,27 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 
     @Override
     public void updateDepartment(Department obj) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+        PreparedStatement preSt = null;
+
+        try {
+            preSt = conn.prepareStatement(
+                "UPDATE department " +
+                "SET Name = ?" +
+                "WHERE Id = ?"
+            );
+
+            preSt.setString(1, obj.getName());
+            preSt.setInt(2, obj.getId());
+
+            preSt.executeUpdate();
+
+    
+
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeStatement(preSt);
+        }
     }
 
     @Override
